@@ -1,101 +1,55 @@
-export type CustomerStatus =
-  | 'QUEUED'
-  | 'DISPATCHED'
-  | 'CLICKED'
-  | 'CONVERTED'
-  | 'INTERCEPTED'
-  | 'OPTED_OUT';
+export type ActiveTab = 'dashboard' | 'customers' | 'campaigns' | 'reviews' | 'settings';
 
-export type PosSource = 'Square' | 'Stripe' | 'Clover' | 'Manual' | 'Webhook' | 'Zapier';
+export type CustomerReviewStatus = 'Sent' | 'Reviewed' | 'Pending';
 
-export interface AuditEvent {
+export interface Customer {
   id: string;
-  step: 1 | 2 | 3 | 4 | 5;
-  title: string;
-  description: string;
-  timestamp: string;
-  iconType: 'receipt' | 'clock' | 'message-square' | 'mouse-pointer' | 'star' | 'shield-alert' | 'ban';
-  details?: Record<string, string | number | boolean>;
-}
-
-export interface CustomerRecord {
-  id: string;
-  tenantId: string;
   name: string;
   phone: string;
-  maskedPhone: string;
-  email?: string;
-  posSource: PosSource;
-  referenceId?: string;
-  transactionAmount?: number;
-  status: CustomerStatus;
-  createdAt: string;
-  scheduledAt: string;
-  sentAt?: string;
-  clickedAt?: string;
-  convertedAt?: string;
-  interceptedAt?: string;
-  rating?: number;
-  ratingSentiment?: 'positive' | 'negative' | 'none';
-  googleReviewUrl?: string;
-  carrierDeliveryStatus?: 'delivered' | 'sent' | 'queued' | 'undelivered';
-  twilioSid?: string;
-  userAgent?: string;
-  coolingDelayHours: number;
-  auditTrail: AuditEvent[];
-  privateFeedback?: {
-    id: string;
-    rating: number;
-    comment: string;
-    contactPreference: 'Phone' | 'Email';
-    resolved: boolean;
-    managerNotes?: string;
-    createdAt: string;
-    resolvedAt?: string;
-  };
+  dateVisited: string;
+  status: CustomerReviewStatus;
+  notes?: string;
 }
 
-export interface Tenant {
+export interface Review {
   id: string;
-  name: string;
-  industry: 'Dental' | 'MedSpa' | 'HVAC' | 'Automotive' | 'Legal';
-  googlePlaceId: string;
-  googleMapsReviewUrl: string;
-  apiKey: string;
-  webhookSecret: string;
-  defaultDelayHours: number;
-  smsTemplate: string;
-  businessPhone: string;
-  accentColor: string;
+  customerName: string;
+  rating: number; // 1-5 stars
+  text: string;
+  date: string;
+  source: 'Google Reviews' | 'Direct';
+  avatarColor?: string;
 }
 
-export type DateRange = '7D' | '30D' | '90D' | 'ALL';
-
-export interface DashboardMetrics {
-  dispatchedInvites: number;
-  deliverySuccessRate: number; // e.g. 98.4
-  starConversionRate: number; // e.g. 74.2
-  interceptedNegatives: number; // shield count
-  reviewVelocityHours: number; // e.g. 4.6
-  totalTransactions: number;
-  activeInQueue: number;
-  dispatchedChangePercent: number;
-  conversionChangePercent: number;
-  shieldChangePercent: number;
-  velocityChangePercent: number;
+export interface ChartDayData {
+  day: string;
+  count: number;
 }
 
-export type ActiveNavTab =
-  | 'dashboard'
-  | 'feedback'
-  | 'delivery'
-  | 'integrations'
-  | 'export'
-  | 'funnel-preview';
+export interface DashboardStats {
+  totalCustomers: number;
+  totalReviews: number;
+  reviewsSent: number;
+  responseRate: number; // percentage, e.g. 80
+  averageRating: number; // e.g. 4.8
+  fiveStarCount: number; // e.g. 10
+}
 
-export interface ToastMessage {
+export interface CampaignConfig {
+  messageTemplate: string;
+  delayOption: 'Immediate' | '1 hour' | '2 hours';
+}
+
+export interface BusinessSettings {
+  googleReviewUrl: string;
+  webhookUrl: string;
+  businessName: string;
+  phone: string;
+}
+
+export interface Toast {
   id: string;
-  type: 'success' | 'info' | 'warning' | 'error';
+  type: 'success' | 'info' | 'error';
   title: string;
-  message: string;
+  message?: string;
 }

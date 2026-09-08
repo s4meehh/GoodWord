@@ -1,6 +1,6 @@
 {
-  "name": "GoodWord",
-  "description": "Automated Google Review generation and reputation protection platform for high-ticket local service businesses.",
+  "name": "ReviewFlow",
+  "description": "Clean, minimalist reputation and Google Review management platform for local businesses.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
